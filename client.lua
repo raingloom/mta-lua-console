@@ -1,6 +1,4 @@
-------------
---create GUI
-------------
+record()
 do
 	local pw, ph = guiGetScreenSize ()
 	local M = math.min ( pw, ph )
@@ -69,11 +67,12 @@ addEventHandler ( 'onClientGUIClick', resourceRoot,
 				if serverMode then
 					triggerServerEvent ( 'executeOnServer', resourceRoot, buf )
 				else
-					local f, e = loadstring ( 'return ' .. buf )
+					local f, e = loadstring ( 'return ' .. buf )--attempt this syntax
 					if not f then
-						f, e = loadstring ( buf )
+						f, e = loadstring ( buf )--fall back to regular run
 					end
 					if f then
+						setfenv ( f, filteredEnv );
 						(function (...)
 							if includeTypeInOutput then
 								for i = 1, arg.n do

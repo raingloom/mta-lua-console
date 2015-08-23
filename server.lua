@@ -1,12 +1,11 @@
+record()
 addEvent ( 'executeOnServer', true )
 addEventHandler ( 'executeOnServer', resourceRoot,
 	function ( buf, includeTypeInOutput )
 		local response
-		if not buf:find ( '(^%s*[_%a][_%w]*%s*=)' ) then
-			buf = 'return ' .. buf
-		end
 		local f, e = loadstring ( buf )
 		if f then
+			setfenv ( f, filteredEnv );
 			(function (...)
 				if includeTypeInOutput then
 					for i = 1, arg.n do
