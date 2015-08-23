@@ -66,13 +66,13 @@ addEventHandler ( 'onClientGUIClick', resourceRoot,
 		if button == 'left' then
 			if source == sendButton then
 				local buf = guiGetText ( inputMemo )
-				if not buf:find ( '(^%s*[_%a][_%w]*%s*=)' ) then
-					buf = 'return ' .. buf
-				end
 				if serverMode then
 					triggerServerEvent ( 'executeOnServer', resourceRoot, buf )
 				else
 					local f, e = loadstring ( 'return ' .. buf )
+					if not f then
+						f, e = loadstring ( buf )
+					end
 					if f then
 						(function (...)
 							if includeTypeInOutput then
