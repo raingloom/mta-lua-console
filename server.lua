@@ -2,7 +2,10 @@ addEvent ( 'executeOnServer', true )
 addEventHandler ( 'executeOnServer', resourceRoot,
 	function ( buf, includeTypeInOutput )
 		local response
-		local f, e = loadstring ( 'return ' .. buf )
+		if not buf:find ( '(^%s*[_%a][_%w]*%s*=)' ) then
+			buf = 'return ' .. buf
+		end
+		local f, e = loadstring ( buf )
 		if f then
 			(function (...)
 				if includeTypeInOutput then
